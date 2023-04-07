@@ -17,7 +17,9 @@
 </script>
 
 <style>
-
+    .calculator{
+        position:absolute;
+    }
 </style>
 
 <div class="calculator">
@@ -30,20 +32,31 @@
             <button onclick={()=>{setOperation('divide');}}>&divide</button>
         </div>
         
-        <div>
-            <button on:click={()=>{setValue(7);}}>7</button>
-            <button on:click={()=>{setValue(8);}}>8</button>
-            <button on:click={()=>{setValue(9);}}>9</button>
+        <div class = "numbers">
+            <div>
+                <button on:click={()=>{setValue(7);}}>7</button>
+                <button on:click={()=>{setValue(8);}}>8</button>
+                <button on:click={()=>{setValue(9);}}>9</button>
+            </div>
+            <div>
+                <button on:click={()=>{setValue(4);}}>4</button>
+                <button on:click={()=>{setValue(5);}}>5</button>
+                <button on:click={()=>{setValue(6);}}>6</button>
+            </div>
+            <div>
+                <button on:click={()=>{setValue(1);}}>1</button>
+                <button on:click={()=>{setValue(2);}}>2</button>
+                <button on:click={()=>{setValue(3);}}>3</button>
+            </div>
+            <div>
+                <button on:click={()=>{setValue(0);}}>0</button>
+                <button on:click={()=>{setValue('.');}}>2</button>
+                <button on:click={()=>{setValue('C');}}>C</button>
+            </div>
         </div>
-        <div>
-            <button on:click={()=>{setValue(4);}}>4</button>
-            <button on:click={()=>{setValue(5);}}>5</button>
-            <button on:click={()=>{setValue(6);}}>6</button>
-        </div>
-        <div>
-            <button on:click={()=>{setValue(1);}}>1</button>
-            <button on:click={()=>{setValue(2);}}>2</button>
-            <button on:click={()=>{setValue(3);}}>3</button>
+
+        <div class = "equal">
+            <button on:click={equal}>=</button>
         </div>
     </div>
 </div>
