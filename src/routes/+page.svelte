@@ -19,6 +19,35 @@
 <style>
     .calculator{
         position:absolute;
+        top:50%;
+        left:50%;
+        transform:translate(-50%,-50%);
+        width:300px;
+        border:1px solid #eee;
+        box-shadow:2px 2px 2px #eee;
+        padding:10px;
+    }
+    .calculator input {
+        width:100%;
+        padding:20px;
+        outline:none;
+        text-align: right;
+        font-size:20px;
+    }
+    .calculator .buttons{
+        display:flex;
+        flex-wrap: wrap;
+    }
+    .calculator .buttons .operations{
+        display:flex;
+        justify-content: space-between;
+        width:100%;
+    }
+    .calculator .buttons .operations button{
+        width:24%;
+    }
+    .calculator .buttons .numbers {
+        width:75%;
     }
 </style>
 
