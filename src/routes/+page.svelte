@@ -1,91 +1,133 @@
 <script>
-    let total = 0;
-    let console = "";
-    let state = null;
-    function resolveState(){
-
-    }
-    function setOperation(operation){
-
-    }
-    function setValue(value){
-
-    }
-    function equal(){
-
-    }
+	import { fly } from 'svelte/transition'
+	import Keypad from '$lib/Keypad.svelte'
+	
+	let numberInput = ""
+	let total = 0
+	
+	function addToEquation(value) {
+		numberInput += value
+	}
+	
+	const clear = () => {
+		total = 0
+		numberInput = ""
+	}
+	
+	function calculate() {
+		if (numberInput !== "") {
+			numberInput = result().toString()
+		}
+	}
+	
+	function replaceAll(string, search, replace) {
+    return string.split(search).join(replace);
+  }
+	
+	function formatString(value) {
+    return replaceAll(replaceAll(value, "*", "x"), "/", "÷");
+  }
+	
+	let result = () => {
+		if (!isNaN(numberInput.slice(-1))) {
+			return eval(numberInput)
+		}
+		return eval(numberInput.slice(0, -1))
+	}
+	
+  $: if (
+    numberInput !== "" &&
+    !isNaN(numberInput.slice(-1)) &&
+    numberInput != result()
+  ) {
+    total = result().toString();
+  }
 </script>
+<link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
+<p class = "title">CALCULATOR WEB-APP</p>
+<section class="app">
+	<div class="results">
+		<div class="calculations">{numberInput}</div>
+		{#if total !== 0}
+			<input transition:fly={{ x: 10, duration: 800 }} type="text" class="total" value={total}>
+		{/if}
+	</div>
+
+	<div class="input-pad">
+		<Keypad expand="3" type="clear" clicked={clear} />
+		<Keypad type="operator" clicked={() => addToEquation('/')}>÷</Keypad>
+		
+		<Keypad clicked={() => addToEquation(9)}>9</Keypad>
+		<Keypad clicked={() => addToEquation(8)}>8</Keypad>
+		<Keypad clicked={() => addToEquation(7)}>7</Keypad>
+		
+		<Keypad type="operator" clicked={() => addToEquation('*')}>x</Keypad>
+		<Keypad clicked={() => addToEquation(6)}>6</Keypad>
+		<Keypad clicked={() => addToEquation(5)}>5</Keypad>
+		<Keypad clicked={() => addToEquation(4)}>4</Keypad>
+		
+		<Keypad type="operator" clicked={() => addToEquation('-')}>-</Keypad>
+		<Keypad clicked={() => addToEquation(3)}>3</Keypad>
+		<Keypad clicked={() => addToEquation(2)}>2</Keypad>
+		<Keypad clicked={() => addToEquation(1)}>1</Keypad>
+		
+		<Keypad type="operator" clicked={() => addToEquation('+')}>+</Keypad>
+		<Keypad expand="3" clicked={() => addToEquation(0)}>0</Keypad>
+
+		<Keypad type="equal" clicked={() => calculate()}>=</Keypad>
+	</div>
+</section>
 
 <style>
-    .calculator{
-        position:absolute;
-        top:50%;
-        left:50%;
-        transform:translate(-50%,-50%);
-        width:300px;
-        border:1px solid #eee;
-        box-shadow:2px 2px 2px #eee;
-        padding:10px;
+	:global(body) {
+		color: #333;
+		margin: 0;
+		padding: 20px;
+		box-sizing: border-box;
+		font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+			Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	}
+
+    .title{
+        font-family: "Poppins",sans-serif;
+        font-size: 36px;
+        text-align: center;
+        font-weight: bold;
     }
-    .calculator input {
-        width:100%;
-        padding:20px;
-        outline:none;
-        text-align: right;
-        font-size:20px;
-    }
-    .calculator .buttons{
-        display:flex;
-        flex-wrap: wrap;
-    }
-    .calculator .buttons .operations{
-        display:flex;
-        justify-content: space-between;
-        width:100%;
-    }
-    .calculator .buttons .operations button{
-        width:24%;
-    }
-    .calculator .buttons .numbers {
-        width:75%;
+	.app {
+		max-width: 300px;
+	}
+
+	.input-pad {
+		display: grid;
+		grid-template-columns: repeat(4, 25%);
+		grid-template-rows: repeat(5, 20%);
+		grid-column-gap: 0;
+		grid-row-gap: 0;
+	}
+
+	.results {
+		display: flex;
+		height: 94px;
+		flex-direction: column;
+		text-align: right;
+	}
+
+	.calculations {
+		height: 20px;
+		color: #828282;
+		padding: 0 10px;
+	}
+
+	.total {
+		color: #333;
+		text-align: right;
+		padding: 10px;
+		font-size: 44px;
+		margin: 0;
+		border: none;
+	}
+    .app{
+        padding-left: 41%;
     }
 </style>
-
-<div class="calculator">
-    <input type = "text" bind:value={console} readonly="true"/>
-    <div class="buttons">
-        <div class="operations">
-            <button onclick={()=>{setOperation('add');}}>+</button>
-            <button onclick={()=>{setOperation('substract');}}>-</button>
-            <button onclick={()=>{setOperation('multiply');}}>&times</button>
-            <button onclick={()=>{setOperation('divide');}}>&divide</button>
-        </div>
-        
-        <div class = "numbers">
-            <div>
-                <button on:click={()=>{setValue(7);}}>7</button>
-                <button on:click={()=>{setValue(8);}}>8</button>
-                <button on:click={()=>{setValue(9);}}>9</button>
-            </div>
-            <div>
-                <button on:click={()=>{setValue(4);}}>4</button>
-                <button on:click={()=>{setValue(5);}}>5</button>
-                <button on:click={()=>{setValue(6);}}>6</button>
-            </div>
-            <div>
-                <button on:click={()=>{setValue(1);}}>1</button>
-                <button on:click={()=>{setValue(2);}}>2</button>
-                <button on:click={()=>{setValue(3);}}>3</button>
-            </div>
-            <div>
-                <button on:click={()=>{setValue(0);}}>0</button>
-                <button on:click={()=>{setValue('.');}}>2</button>
-                <button on:click={()=>{setValue('C');}}>C</button>
-            </div>
-        </div>
-
-        <div class = "equal">
-            <button on:click={equal}>=</button>
-        </div>
-    </div>
-</div>
